@@ -1,7 +1,10 @@
 # Sistema Interno - Red de locales de venta de ropa
 
 API Restful la cual implementa dos CRUDs. <br>
+
 Proyecto realizado a modo educativo.<br>
+
+Backend realizado con NodeJS
 
 ## Instalación
 
@@ -21,7 +24,6 @@ Proyecto realizado a modo educativo.<br>
    ```
    .env.example >>> .env
    ```
-
    ​
    se debe colocar una clave privada y el link de conexión a la base de datos MongoDB
 
@@ -33,7 +35,7 @@ Proyecto realizado a modo educativo.<br>
    ​
    para correr el proyecto, que estará disponible en http://localhost:3000
 
-## Se utilizó 📋
+## Se utilizó
 
 -Express
 
