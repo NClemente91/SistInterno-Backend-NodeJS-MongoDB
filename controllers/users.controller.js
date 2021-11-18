@@ -1,30 +1,16 @@
 const User = require("../models/user");
+const response = require("../network/response");
 
 //PARA MOSTRAR UN USARIO
 const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params._id);
     if (!user) {
-      return res.status(404).json({
-        code: "NOT-FOUND",
-        message: "Not Found",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Not Found", 404);
     }
-    return res.status(200).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: user,
-    });
+    return response.success(req, res, null, 200, user);
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -35,12 +21,7 @@ const putUser = async (req, res) => {
     Object.keys(req.body).includes("rol") &&
     req.user.rol !== "administrador"
   ) {
-    return res.status(403).json({
-      code: "ERR",
-      message: "Unable to assign a new role",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Unable to assign a new role", 403);
   }
   try {
     const user = await User.findOneAndUpdate(
@@ -49,26 +30,11 @@ const putUser = async (req, res) => {
       { new: true }
     );
     if (!user) {
-      return res.status(404).json({
-        code: "NOT-FOUND",
-        message: "Not Found",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Not Found", 404);
     }
-    return res.status(200).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: user,
-    });
+    return response.success(req, res, null, 200, user);
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -77,27 +43,12 @@ const deleteUser = async (req, res) => {
   try {
     const userDelete = await User.deleteOne({ _id: req.params._id });
     if (userDelete.n === 0) {
-      return res.status(404).json({
-        code: "NOT-FOUND",
-        message: "User does not exist",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Not Found", 404);
     } else {
-      return res.status(200).json({
-        code: "OK",
-        message: null,
-        success: true,
-        data: null,
-      });
+      return response.success(req, res, null, 200, null);
     }
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 

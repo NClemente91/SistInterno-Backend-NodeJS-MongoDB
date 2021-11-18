@@ -1,17 +1,18 @@
 const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const response = require("../network/response");
 
 //PARA REGISTRAR UN USUARIO POR PRIMERA VEZ
 const registerUser = async (req, res) => {
   //No permitimos que ingrese el rol por primera vez, por defecto es usuario
   if (Object.keys(req.body).includes("rol")) {
-    return res.status(403).json({
-      code: "ERR",
-      message: "Unable to assign a role in the registry",
-      success: false,
-      data: null,
-    });
+    return response.error(
+      req,
+      res,
+      "Unable to assign a role in the registry",
+      403
+    );
   }
 
   //Separamos la contraseña del resto de los datos
@@ -22,19 +23,9 @@ const registerUser = async (req, res) => {
 
   try {
     const user = await User.create(resto);
-    return res.status(201).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: user,
-    });
+    return response.success(req, res, null, 201, user);
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -47,12 +38,7 @@ const loginUser = async (req, res) => {
 
     //Validamos que el usuario exista y sea correcta la contraseña
     if (!user || !bcryptjs.compareSync(password, user.password)) {
-      return res.status(400).json({
-        code: "AUTH-ERROR",
-        message: "Invalid email or password",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Invalid email or password", 400);
     }
 
     //Creamos un token de ingreso
@@ -60,19 +46,9 @@ const loginUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    return res.status(200).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: { user, token },
-    });
+    return response.success(req, res, null, 200, { user, token });
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 

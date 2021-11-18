@@ -1,10 +1,7 @@
+const response = require("../network/response");
+
 const errorPage = (req, res) => {
-  return res.status(404).json({
-    code: "ERR",
-    message: "Not Found",
-    success: false,
-    data: null,
-  });
+  return response.error(req, res, "Not Found", 404);
 };
 
 module.exports = { errorPage };

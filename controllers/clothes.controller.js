@@ -1,4 +1,5 @@
 const Clothe = require("../models/clothe");
+const response = require("../network/response");
 
 //PARA MOSTRAR TODAS LAS PRENDAS DE ROPA
 const getAllClothes = async (req, res) => {
@@ -13,19 +14,9 @@ const getAllClothes = async (req, res) => {
       .sort({ _id: 1 })
       .limit(limit)
       .skip(skipIndex);
-    return res.status(200).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: { count, clothes },
-    });
+    return response.success(req, res, null, 200, { count, clothes });
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -33,27 +24,14 @@ const getAllClothes = async (req, res) => {
 const getClothe = async (req, res) => {
   try {
     const clothe = await Clothe.findById(req.params._id);
+
     if (!clothe) {
-      return res.status(404).json({
-        code: "NOT-FOUND",
-        message: "Not Found",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Not Found", 404);
     }
-    return res.status(200).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: clothe,
-    });
+
+    return response.success(req, res, null, 200, clothe);
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -61,19 +39,9 @@ const getClothe = async (req, res) => {
 const postClothe = async (req, res) => {
   try {
     const clothe = await Clothe.create(req.body);
-    return res.status(201).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: clothe,
-    });
+    return response.success(req, res, null, 201, clothe);
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -86,26 +54,11 @@ const putClothe = async (req, res) => {
       { new: true }
     );
     if (!clothe) {
-      return res.status(404).json({
-        code: "NOT-FOUND",
-        message: "Not Found",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Not Found", 404);
     }
-    return res.status(200).json({
-      code: "OK",
-      message: null,
-      success: true,
-      data: clothe,
-    });
+    return response.success(req, res, null, 200, clothe);
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
@@ -114,27 +67,12 @@ const deleteClothe = async (req, res) => {
   try {
     const clotheDelete = await Clothe.deleteOne({ _id: req.params._id });
     if (clotheDelete.n === 0) {
-      return res.status(404).json({
-        code: "NOT-FOUND",
-        message: "Not Found",
-        success: false,
-        data: null,
-      });
+      return response.error(req, res, "Not Found", 404);
     } else {
-      return res.status(200).json({
-        code: "OK",
-        message: null,
-        success: true,
-        data: null,
-      });
+      return response.success(req, res, null, 200, null);
     }
   } catch (error) {
-    return res.status(500).json({
-      code: "ERR",
-      message: "Internal Server Error",
-      success: false,
-      data: null,
-    });
+    return response.error(req, res, "Internal Server Error", 500);
   }
 };
 
