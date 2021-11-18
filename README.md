@@ -33,7 +33,7 @@ Backend realizado con NodeJS
    npm start
    ```
    ​
-   para correr el proyecto, que estará disponible en http://localhost:3000
+   Proyecto enlazado con https://github.com/NClemente91/SistInterno-Tienda-Frontend-Angular, donde se puede ver una vista previa de su funcionamiento
 
 ## Se utilizó
 
